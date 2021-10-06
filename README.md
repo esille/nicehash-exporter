@@ -1,4 +1,7 @@
-[![Docker Build Status](https://img.shields.io/docker/cloud/build/tg44/nicehash-exporter?style=flat-square)](https://hub.docker.com/r/tg44/nicehash-exporter)
+[![Build](https://img.shields.io/github/workflow/status/tg44/nicehash-exporter/ci)](https://github.com/tg44/nicehash-exporter/actions/workflows/build-and-publish.yaml)
+[![DockerImage](https://img.shields.io/badge/docker-latest-brightgreen?style=flat-square)](https://github.com/tg44/nicehash-exporter/pkgs/container/nicehash-exporter)
+[![Docker Hub](https://img.shields.io/badge/docker_hub-latest-brightgreen?style=flat-square)](https://hub.docker.com/r/tg44/nicehash-exporter)
+
 
 # NiceHash exporter
 
@@ -15,18 +18,19 @@ You can reach the metrics on `localhost:3000/metrics`.
 ### Docker and compose
 For docker you can run;
 ```
-docker run -e NH_API_KEY="key" -e NH_API_SECRET="secret" tg44/nicehash-exporter
+docker run -e NH_API_KEY="key" -e NH_API_SECRET="secret" -e NH_API_ORG_ID="orgId" ghcr.io/tg44/nicehash-exporter
 ```
 For docker compose;
 ```
 version: '3.1'
 services:
   nicehash-exporter:
-    image: tg44/nicehash-exporter
+    image: ghcr.io/tg44/nicehash-exporter
     restart: unless-stopped
     environment:
       - NH_API_KEY=key
       - NH_API_SECRET=secret
+      - NH_API_ORG_ID=orgId
       - PORT=3000 #optionally you can override the port inside for dev reasons, default is 3000
       - REFRESH_RATE_SECONDS=30 #optionally you can override the api poll rate, default is 30
       - NODDE_METRICS_PREFIX=nh_ #optionally you can override the node system/app metrics prefix, default is empty
@@ -37,6 +41,12 @@ services:
 ```
 
 ## Breaking changes
+ - 2021.07.27.
+   - nh_total_btc modified to actually show the total money in btc for the account and not only just the total btc amount
+   - we will permanently move away from dockerhub, the latest images will be pushed, but the documentation and the other infos will only be updated here
+     - DH freeze the free builds, while GH-Actions not only build free, but gives us public repositories too
+ - 2021.06.19.
+   - due to changes on NH end, the orgId mandatory from now
  - 2021.05.31.
    - btc_usd_rate get renamed to btcusdc_rate due to the configurable rate list option
 
